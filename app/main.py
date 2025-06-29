@@ -4,5 +4,5 @@ app = FastAPI()
 
 
 @app.get('/hotels/{hotel_id}') 
-def get_hotels(hotel_id: int):  
+def get_hotels(hotel_id: int, date_from, date_to):  
     return hotel_id
