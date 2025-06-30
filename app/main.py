@@ -4,7 +4,7 @@ from datetime import date
 from fastapi import Query
 from pydantic import BaseModel
 
-app = FastAPI()
+app = FastAPI() # ГОЙДА
 
 # Схема для валидации отелей
 class SHotel(BaseModel):
