@@ -1,17 +1,41 @@
 from fastapi import FastAPI
-from typing import Optional # для опциональных аргументов
-from datetime import date # для типа данных "дата"
-from fastapi import Query # для ограничения введенных значений
+from typing import Optional
+from datetime import date
+from fastapi import Query
+from pydantic import BaseModel
 
 app = FastAPI()
 
+# Схема для валидации отелей
+class SHotel(BaseModel):
+    address: str
+    name: str
+    stars: int
+    has_spa: bool
+
 @app.get('/hotels')
 def get_hotels(
-	location: str,   # строка местоположения (обяз.)
-	date_from: date, # дата прибытия (обяз.)
-	date_to: date,   # дата отбытия (обяз.)
-	has_spa: Optional[bool] = None, # опциональный логический с None
-	# ограничение кол-ва звезд отеля
-	stars: Optional[int] = Query(None, ge=1, le=5)
-):
-	return location, date_from, date_to, has_spa, stars
+    location: str,
+    date_from: date,
+    date_to: date,
+    has_spa: Optional[bool] = None,
+    stars: Optional[int] = Query(None, ge=1, le=5),
+) -> list[SHotel]:
+    # добавляем словарь с отелем
+    hotels = [
+        {
+            'address': 'ул. Гагарина, 1, Алтай',
+            'name': 'Super Hotel',
+            'stars': 5,
+        },
+    ]
+    return hotels
+
+class SBooking(BaseModel):
+    room_id: int
+    date_from: date
+    date_to: date
+
+@app.post('/bookings')
+def bookings(booking: SBooking):
+    pass
