@@ -1,39 +1,19 @@
 from fastapi import FastAPI
-from typing import Any
-from datetime import date
-from fastapi import Query
-from pydantic import BaseModel
+from typing import Any # была нужна для валидации словаря
 
-app = FastAPI() # ГОЙДА
+from fastapi import Depends # для валидности аргументов
 
-# Схема для валидации отелей
-class SHotel(BaseModel):
-    address: str
-    name: str
-    stars: int
+# импорт моделей
+from app.SHotelsSearchArgs import SHotelsSearchArgs
+from app.SBooking import SBooking
+
+app = FastAPI()
 
 @app.get('/hotels')
 def get_hotels(
-    location: str,
-    date_from: date,
-    date_to: date,
-    has_spa: bool | None = None,
-    stars: int | None = Query(None, ge=1, le=5),
-) -> list[dict[str, Any]]: # словарь где ключ - строка, значения - любые
-    # добавляем словарь с отелем
-    hotels = [
-        {
-            'address': 'ул. Гагарина, 1, Алтай',
-            'name': 'Super Hotel',
-            'stars': 5,
-        },
-    ]
-    return hotels
-
-class SBooking(BaseModel):
-    room_id: int
-    date_from: date
-    date_to: date
+    search_args: SHotelsSearchArgs = Depends() # использование схемы отлей
+):
+    return search_args
 
 @app.post('/bookings')
 def bookings(booking: SBooking):
