@@ -1,18 +1,15 @@
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import DeclarativeBase, sessionmaker
 
-# отдельные переменные для удобства
-DB_HOST = 'localhost' # хост
-DB_PORT = 5432        # исходный порт
-DB_USER = 'postgres'  # имя пользователя
-DB_PASS = 'postgres'  # пароль
-DB_NAME = 'postgres'  # название БД
+# импорт чувствительных данных из config.py
+from app.config import settings
 
-# URL базы данных:
-DATABASE_URL = f'postgresql+asyncpg://{DB_USER}:{DB_PASS}@{DB_HOST}:{DB_PORT}/{DB_NAME}'
+# чувствительные данные были вынесены в отдельный файл
+
+# URL базы данных был перемещен в app.config
 
 # асинхронный движок Алхимии:
-engine = create_async_engine(DATABASE_URL)
+engine = create_async_engine(settings.DATABASE_URL)
 
 # генератор сессий (транзацкий / инструкций) для БД
 async_session_maker = sessionmaker(engine, 
