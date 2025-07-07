@@ -7,7 +7,13 @@ from alembic import context
 
 from app.database import Base # импорт базовой модели
 from app.config import settings # новый импорт URL БД
-from app.hotels.models import Hotels # импорт отелей
+
+# импорт всех моделей
+from app.hotels.models import Hotels
+from app.hotels.models import Rooms
+from app.bookings.models import Bookings
+from app.users.models import Users
+
 import sys
 from os.path import abspath, dirname
 
